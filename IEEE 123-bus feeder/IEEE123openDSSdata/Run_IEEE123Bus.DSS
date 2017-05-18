@@ -1,0 +1,60 @@
+! Annotated "Run" file for the IEEE 123 Bus Test Case
+!
+
+! This file contains two DSS scripts for executing the IEEE 123-bus test case.
+
+! The first script lets the DSS compute the regulator taps, which are generally one off from the 
+! presently posted solution. The second script uses the tap values determined by Kersting. This is done by
+! setting the taps on the transformers representing the regulators and then inhibiting the regulator control
+
+! The circuit definition is controlled by a "master" file, which invokes other files. This is but one 
+! logical way to oganize your files. You are free to choose another scheme of your choosing.
+
+! =================================================================
+! 1st Script
+! =================================================================
+
+
+
+Compile (IEEE123Master.dss)
+
+! set regulators on same tap as Kersting computes
+! (uses RPN inline math feature of OpenDSS)
+! Transformer taps are expressed in per unit
+
+Transformer.reg1a.wdg=2 Tap=(0.00625  7  * 1 +)   ! Tap 7
+Transformer.reg2a.wdg=2 Tap=(0.00625 -1 * 1 +)    ! Tap -1
+Transformer.reg3a.wdg=2 Tap=(0.00625  0  * 1 +)   ! Tap 0
+Transformer.reg3c.wdg=2 Tap=(0.00625 -1 * 1 +)    ! Tap -1
+Transformer.reg4a.wdg=2 Tap=(0.00625  8 * 1 +)    ! Tap 8
+Transformer.reg4b.wdg=2 Tap=(0.00625  1 * 1 +)    ! Tap 1
+Transformer.reg4c.wdg=2 Tap=(0.00625  5 * 1 +)    ! Tap 5
+
+! Lock the regulators so they don't move
+! Another way of doing this is to Set ControlMode=OFF
+
+RegControl.creg1a.maxtapchange=0  !Fixed at present tap
+RegControl.creg2a.maxtapchange=0  !Fixed at present tap
+RegControl.creg3a.maxtapchange=0  !Fixed at present tap
+RegControl.creg4a.maxtapchange=0  !Fixed at present tap
+RegControl.creg3c.maxtapchange=0  !Fixed at present tap
+RegControl.creg4b.maxtapchange=0  !Fixed at present tap
+RegControl.creg4c.maxtapchange=0  !Fixed at present tap
+
+! No need to revise the MaxControlIter option in this case;
+! there will be only one control iteration
+
+New EnergyMeter.Feeder Line.L115 1
+
+solve
+Buscoords Buscoords.dat   ! load in bus coordinates
+
+! Show some selected results
+
+Plot Profile
+
+Show Voltage LN Nodes
+!Show Currents Elements
+!Show Powers kva Elements
+Show taps  
+
