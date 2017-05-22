@@ -14,5 +14,5 @@ Benchmark solutions for the IEEE 123-bus and the 8500-node feeder are taken from
 
 If you are interested in using this material in your research, we kindly request you to cite the following publication:
 
-M. Bazrafshan and N. Gatsis, ``Comprehensive modeling of three-phase distribution systems via the bus admittance matrix," IEEE Trans. on Power Systems, submitted.
+M. Bazrafshan and N. Gatsis, ``Comprehensive modeling of three-phase distribution systems via the bus admittance matrix," _IEEE Trans. Power Syst._, submitted. [Online]. Available: https://arxiv.org/abs/1705.06782
 
