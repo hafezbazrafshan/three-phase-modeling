@@ -48,7 +48,7 @@ end
 x0=2;
 y0=2;
 width=8;
-height=5;
+height=6;
 figure1=figure('Units','inches',...
 'Position',[x0 y0 width height],...
 'PaperPositionMode','auto');
@@ -68,19 +68,19 @@ set(currentAxes,'XTick',epsilonLogarithm);
 XTickLabelSet=epsilonLogarithm;
 set(currentAxes,'XtickLabels',[]);
 xlim([epsilonLogarithm(1)-0.2 epsilonLogarithm(end)+0.2]);
-ylim([-0.005 max([a_err;b_err;c_err])+0.03]);
+ylim([-0.001 max([a_err;b_err;c_err])+0.001]);
 VerticalOffset = 0.003;
 ax=axis;
 xTicks=get(currentAxes,'XTick');
 for i = 1:length(XTickLabelSet)
 %Create text box and set appropriate properties
      text(xTicks(i),ax(3) - VerticalOffset, ['$\mathbf{10^{' num2str( -XTickLabelSet(i)) '}}$'],...
-         'horizontalAlignment','Center','interpreter', 'latex','fontSize',14,'fontName','Times New Roman');   
+         'horizontalAlignment','Center','interpreter', 'latex','fontSize',20,'fontName','Times New Roman');   
 end
 set(currentAxes,'fontSize',16); 
 grid on; 
 set(currentAxes, 'box','on'); 
-t = text(xTicks(5)-0.4,ax(3)-0.008,' $\epsilon/|y_t|$');
+t = text(xTicks(5)-0.4,ax(3)-0.007,' $\epsilon/|y_t|$');
 s = t.FontSize;
 t.FontSize = 20;
 % xlabel(' $\epsilon$','FontName','Times New Roman','fontSize',18); 
