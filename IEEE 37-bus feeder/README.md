@@ -46,7 +46,7 @@ The output of this function should typically be input to the function `computeNo
  * `v0phases` (optional) A 3*1 vector of phases in degrees for the slack bus voltage phasor.
  
  
- ## `setupLoadsIEEE37,m`
+ ## `setupLoadsIEEE37.m`
  This function updates the `network` structure created previously with information on loads.
  The modeling of loads is based on the load type (constant-power, constant-current, constant-impedance, or any combination of these) as well as the connection (delta, wye, or a combination of these).  The load model is explicitly given in the `calculateIPQII.m` function and is highlighted here first. 
  The general load model is as follows:
@@ -68,7 +68,43 @@ The vector $c(i,:)$ has two binary entries. The first binary entry corresponds t
    * `gMat` A matrix determining the ZIP load combination.
    * `CMat` A matrix determining the wye, delta, or mixed wye delta connections. (See the above on load modeling)
    
+ The output of this function should typically be input to the function `performZBus.m`.
    
    
-    
+ ### List of inputs
+ * `network` a structure created by `computeNoLoadVoltage.m`
+   
+## `performZBus.m` 
+Computes the Z-Bus load flow.
+
+### List of outputs
+* `network` a structure with the following additional field:
+ * `ZBusResults` a structure with the following fields:
+  * `v` vector of voltages (all phases in vector format)
+  * `vsol` solution computed (similar to `v` but does not include the slack voltage)
+  * `success` success flag
+  * `err` the error at the final iteration
+  
+  The output of this function should typically be input to the function `obtainVoltages.m`.
  
+
+
+### List of inputs 
+* `network` structure created by 
+* `maxIt` (optional) Maximum iterations. If not specified, a default value of 10 is assumed
+
+
+## `obtainVoltages.m`
+This function merely maps the computed voltage vector from the Z-Bus load-flow to appropriate data structure in terms of buses and their phases. 
+
+### List of outputs
+*  `network` an structure with the following additional fields:
+ * `solution` an structure with the following fields:
+  * `resultsVMag` a Matrix (N+1)-by-3 corresponding to computed voltage magnitudes
+  * `resultsVPhase` a Matrix (N+1)-by-3 corresponding to computed voltage phases in radians
+  * `v3phase` a Matrix (N+1)-by-3 corresponding to computed voltage phasors
+  * `v3phaseRegs` a Matrix (N+1+NREgs)-by-3 corresponding to computed voltage phasors including regulator secondary buses
+ 
+ ### List of inputs
+ * `network` an structure created by `performZBus.m`
+  
